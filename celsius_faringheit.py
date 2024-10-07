@@ -10,6 +10,6 @@ class Temperature:
         return self.__celsius
 
 
-temp = Temperature(77)
-print(temp.to_fahrenheit(77))
+temp = Temperature(25)
+print(temp.to_fahrenheit(25))
 print(temp.get_celsius())
