@@ -1,26 +1,27 @@
 from tkinter import *
 from hitbox import Hitbox
 from random import randint
+import world
 
 class Tank:
 
     __count=0 # счетчик танков
 
     def __init__(self, canvas, x, y, model = 'T-14 Армата', ammo = 100, speed = 5,
-                 file_up = '../img/tankT34_up.png',
-                 file_down = '../img/tankT34_down.png',
-                 file_left = '../img/tankT34_left.png',
-                 file_right = '../img/tankT34_right.png',
+                 file_up='../img/tankT34_down.png',
+                 file_down='../img/tankT34_up.png',
+                 file_left='../img/tankT34_left.png',
+                 file_right='../img/tankT34_right.png',
                  bot = True):
 
         self.__bot = bot
 
         self.__target = None # цель для стрельбы
 
-        self.__skin_up = PhotoImage(file = file_up)
-        self.__skin_down = PhotoImage(file = file_down)
-        self.__skin_left = PhotoImage(file = file_left)
-        self.__skin_right = PhotoImage(file = file_right)
+        self.__skin_up = PhotoImage(file=file_up)
+        self.__skin_down = PhotoImage(file=file_down)
+        self.__skin_left = PhotoImage(file=file_left)
+        self.__skin_right = PhotoImage(file=file_right)
 
         Tank.__count += 1
 
@@ -60,9 +61,9 @@ class Tank:
                 self.right()
         else:
             if self.__target.get_y() < self.get_y():
-                self.backvard()
-            else:
                 self.forward()
+            else:
+                self.backvard()
 
     def __AI(self): # алгоритм для бота
         if randint(1,30) == 1: # поворот в случайном направлении с частотой 30 кадров
@@ -90,14 +91,14 @@ class Tank:
     def forward(self): # назад
         if self.__fuel > 0:
             self.__vx = 0
-            self.__vy = 1
+            self.__vy = -1
             self.__canvas.itemconfig(self.__id, image = self.__skin_down)
             #self.__repaint()
 
     def backvard(self): # вперёд
         if self.__fuel > 0:
             self.__vx = 0
-            self.__vy = -1
+            self.__vy = 1
             self.__canvas.itemconfig(self.__id, image = self.__skin_up)
             #self.__repaint()
 
@@ -125,6 +126,8 @@ class Tank:
             self.__x += self.__dx
             self.__y += self.__dy
             self.__update_hitbox()
+            #self.__fuel -= self.__speed
+            self.__check_out_of_world()
             self.__repaint()
 
     def __create(self):
@@ -135,6 +138,15 @@ class Tank:
 
     def __update_hitbox(self): # метод движения хитбокса
         self.__hitbox.moveto(self.__x, self.__y)
+
+    def __check_out_of_world(self): # проверка выхода танка за границы мира
+        if self.__hitbox.left < 0 or \
+            self.__hitbox.top < 0 or \
+            self.__hitbox.right > world.WIDTH or \
+            self.__hitbox.bottom > world.HEIGHT:
+            self.__undo_move()
+            if self.__bot:
+                self.__AI_change_orientation()
 
     def __undo_move(self): # метод возврата танка на место после столкновения
         if self.__dx == 0 and self.__dy == 0:

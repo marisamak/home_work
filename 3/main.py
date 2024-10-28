@@ -1,5 +1,6 @@
 from tank import Tank
 from tkinter import*
+import world
 
 def key_press(event):
     print(f'Нажата клавиша {event.keysym}, код {event.keycode}')
@@ -22,9 +23,9 @@ def check_collision():
     enemy.intersects(player)
 
 def key_press(event):
-    if event.keycode == KEY_S:
-        player.forward()
     if event.keycode == KEY_W:
+        player.forward()
+    if event.keycode == KEY_S:
         player.backvard()
     if event.keycode == KEY_A:
         player.left()
@@ -34,7 +35,7 @@ def key_press(event):
 
 w = Tk()
 w.title('Танки на минималках 2.0')
-canv = Canvas(w, width = 800, height = 600, bg = 'alice blue')
+canv = Canvas(w, width = world.WIDTH, height = world.HEIGHT, bg = 'alice blue')
 canv.pack()
 player = Tank(canvas = canv, x = 100, y = 50, ammo = 100, speed = 3, bot = False)
 
