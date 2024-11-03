@@ -55,7 +55,7 @@ class Tank:
 
     def __AI_goto_target(self):
         if randint(1, 2) == 1:
-            if self.__target.get_x() > self.get_x():
+            if self.__target.get_x() < self.get_x():
                 self.left()
             else:
                 self.right()
