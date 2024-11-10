@@ -1,3 +1,12 @@
+_camera_x = 0
+_camera_y = 0
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 800
+
+WIDTH = SCREEN_WIDTH * 6
+HEIGHT = SCREEN_HEIGHT * 4
+
 def set_camera_xy(x, y):
     global _camera_x, _camera_y
 
@@ -22,12 +31,3 @@ def get_screen_x(world_X):
 
 def get_screen_y(world_Y):
     return world_Y - _camera_y
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 800
-
-WIDTH = SCREEN_WIDTH * 6
-HEIGHT = SCREEN_HEIGHT * 4
-
-_camera_x = 0
-_camera_y = 0
