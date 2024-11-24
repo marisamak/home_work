@@ -1,6 +1,7 @@
 from tank import Tank
 from tkinter import*
 import tanks_collections
+
 import world
 import texture
 
@@ -53,10 +54,6 @@ def load_textures():
     texture.load('file_left', '../img/tankT34_left.png')
     texture.load('file_right', '../img/tankT34_right.png')
 
-    texture.load(world.BRICK, '../img/brick.png')
-    texture.load(world.WATER, '../img/water.png')
-    texture.load(world.CONCRETE, '../img/wall.png')
-
 w = Tk()
 
 load_textures()
@@ -64,8 +61,6 @@ load_textures()
 w.title('Танки на минималках 2.0')
 canv = Canvas(w, width = world.WIDTH, height = world.HEIGHT, bg = 'alice blue')
 canv.pack()
-
-world.initialaze(canv)
 
 tanks_collections.initialize(canv)
 w.bind('<KeyPress>', key_press)
