@@ -21,6 +21,7 @@ def update():
     world.set_camera_xy(player.get_x()-world.SCREEN_WIDTH//2 + player.get_size()//2,
                         player.get_y()-world.SCREEN_HEIGHT//2 + player.get_size()//2)
 
+    world.update_map()
     w.after(1000//FPS, update)
 
 def key_press(event):
@@ -62,7 +63,7 @@ w = Tk()
 load_textures()
 
 w.title('Танки на минималках 2.0')
-canv = Canvas(w, width = world.WIDTH, height = world.HEIGHT, bg = 'alice blue')
+canv = Canvas(w, width = world.SCREEN_WIDTH, height = world.SCREEN_HEIGHT, bg = '#8ccB5e')
 canv.pack()
 
 world.initialaze(canv)
