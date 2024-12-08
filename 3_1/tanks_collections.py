@@ -39,7 +39,7 @@ def spawn(is_bot=True):
         col = randint(1, cols-1)
         row = randint(1, rows-1)
 
-        if world.get_block(row, cols) != world.GROUND:
+        if world.get_block(row, col) != world.GROUND:
             continue
 
         t = Tank(_canvas, x = col*world.BLOCK_SIZE, y = row*world.BLOCK_SIZE, speed=2, bot=is_bot)
