@@ -5,7 +5,7 @@ import tanks_collection
 import texture
 
 def key_press(event):
-    print(f'ажата клавиша {event.keysym}, код {event.keycode}')
+    print(f'Нажата клавиша {event.keysym}, код {event.keycode}')
 
 KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN = 37,39,38,40
 
@@ -16,7 +16,7 @@ KEY_D=68
 FPS=60
 
 def update():
-    tanks_collection.update()#####
+    tanks_collection.update()
     player=tanks_collection.get_player()
     world.set_camera_xy(player.get_x()-world.SCREEN_WIDTH//2+player.get_size()//2,
                         player.get_y()-world.SCREEN_HEIGHT//2+player.get_size()//2)

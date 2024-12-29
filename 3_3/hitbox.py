@@ -1,4 +1,5 @@
 import world
+
 class Hitbox:
     def __init__(self,x,y,width,height,padding=0):
         self.pad=padding

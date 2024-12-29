@@ -1,5 +1,3 @@
-# Картинки танков
-
 from hitbox import Hitbox
 from tkinter import *
 from random import randint
@@ -8,7 +6,7 @@ import texture as skin
 
 class Tank:
     __count = 0
-    # 1 в параметры объекта добавить картинки (путь до картинк)
+
     def __init__(self, canvas, x, y,model = 'Т-14 Армата', ammo = 100, speed = 5,
                  #file_up = '../img/tankT34_up.png',
                  #file_down = '../img/tankT34_down.png',
@@ -62,7 +60,6 @@ class Tank:
         self.__vx = 0
         self.__vy = -1
         self.__canvas.itemconfig(self.__id, image =skin.get('tank_up'))
-
 
 
     def backward(self):
