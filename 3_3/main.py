@@ -49,14 +49,15 @@ def key_press(event):
         tanks_collection.spawn()
 
 def load_textures():
-    texture.load('tank_up',
-                 '../img/tankT34_up.png')
-    texture.load("tank_down",
-                 '../img/tankT34_down.png')
-    texture.load("tank_left",
-                 '../img/tankT34_left.png')
-    texture.load("tank_right",
-                 '../img/tankT34_right.png')
+    texture.load('tank_up','../img/tankT34_up.png')
+    texture.load("tank_down",'../img/tankT34_down.png')
+    texture.load("tank_left",'../img/tankT34_left.png')
+    texture.load("tank_right",'../img/tankT34_right.png')
+
+    texture.load('tank_up_player','../img/tank_up_player.png')
+    texture.load('tank_down_player','../img/tank_down_player.png')
+    texture.load('tank_left_player','../img/tank_left_player.png')
+    texture.load('tank_right_player','../img/tank_right_player.png')
 
     texture.load(world.BRICK, "../img/brick.png")
     texture.load(world.WATER, "../img/water.png")
