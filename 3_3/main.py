@@ -4,16 +4,10 @@ import world
 import tanks_collection
 import texture
 
+
 def key_press(event):
     print(f'Нажата клавиша {event.keysym}, код {event.keycode}')
 
-KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN = 37,39,38,40
-
-KEY_W=87
-KEY_S=83
-KEY_A=65
-KEY_D=68
-FPS=60
 
 def update():
     tanks_collection.update()
@@ -24,29 +18,19 @@ def update():
     w.after(1000//FPS,update)
 
 
-
-
 def key_press(event):
     player=tanks_collection.get_player()
     if event.keycode == KEY_W:
-        player.forvard()
+        player.forward()
     if event.keycode == KEY_S:
         player.backward()
     if event.keycode == KEY_A:
         player.left()
     if event.keycode == KEY_D:
         player.right()
-
-    #if event.keycode == KEY_UP:
-        #world.move_camera(0,-5)
-    #if event.keycode == KEY_DOWN:
-        #world.move_camera(0,5)
-    #if event.keycode == KEY_LEFT:
-        #world.move_camera(-5,0)
-    #if event.keycode == KEY_RIGHT:
-        #world.move_camera(5,0)
     if event.keycode == 32:
         tanks_collection.spawn()
+
 
 def load_textures():
     texture.load('tank_up','../img/tankT34_up.png')
@@ -63,6 +47,15 @@ def load_textures():
     texture.load(world.WATER, "../img/water.png")
     texture.load(world.CONCRETE, "../img/wall.png")
     texture.load(world.MISSLE, "../img/bonus.png")
+
+
+KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN = 37,39,38,40
+
+KEY_W=87
+KEY_S=83
+KEY_A=65
+KEY_D=68
+FPS=60
 
 w=Tk()
 load_textures()
