@@ -11,7 +11,6 @@ class Unit:
         self._x = x
         self._y = y
         self._speed = speed
-        self._padding = padding
         self._bot = bot
         self._vx = 0
         self._vy = 0
@@ -19,7 +18,7 @@ class Unit:
         self._dx = 0
         self._dy = 0
 
-        self._hitbox = Hitbox(x, y, world.BLOCK_SIZE, world.BLOCK_SIZE)
+        self._hitbox = Hitbox(x, y, world.BLOCK_SIZE, world.BLOCK_SIZE, padding)
 
         self._default_image = default_image
         self._left_image = default_image
@@ -58,6 +57,7 @@ class Unit:
         self._vy = 0
         self._canvas.itemconfig(self._id, image=skin.get(self._left_image))
 
+
     def right(self):
         self._vx = 1
         self._vy = 0
@@ -71,7 +71,7 @@ class Unit:
 
     def update(self):
         if self._bot:
-            self._AI
+            self._AI()
         self._dx = self._vx * self._speed
         self._dy = self._vy * self._speed
         self._x += self._dx
@@ -103,7 +103,7 @@ class Unit:
         self._set_usual_speed()
 
 
-    def _on_map_collision(self):
+    def _on_map_collision(self, details):
         pass
 
 
@@ -133,9 +133,7 @@ class Unit:
 
 
     def _on_intersects(self, other_unit):
-        super()._on_intersects(other_unit)
-        if self._bot:
-            self._change_orientation()
+        self._undo_move()
 
 
     def _change_orientation(self):
@@ -184,7 +182,7 @@ class Unit:
 
 class Tank(Unit):
     def __init__(self, canvas, row, col, bot=True):
-        super().__init__(canvas, col*world.BLOCK_SIZE, row*world.BLOCK_SIZE, 2, 2, bot, 'tank_up')
+        super().__init__(canvas, col*world.BLOCK_SIZE, row*world.BLOCK_SIZE, 2, 1, bot, 'tank_up')
         if bot:
             self._forward_image = 'tank_up'
             self._backward_image = 'tank_down'
@@ -223,7 +221,7 @@ class Tank(Unit):
     def _AI(self):
         if randint(1,30) == 1:
             if randint(1,10) < 9 and self._target is not None:
-                self._AI_goto_orientation()
+                self._AI_goto_target()
             else:
                 self._change_orientation()
 
@@ -234,7 +232,7 @@ class Tank(Unit):
 
 
     def _take_ammo(self):
-        self._ammo += 100
+        self._ammo += 10
         if self._ammo > 100:
             self._ammo = 100
 
@@ -246,8 +244,10 @@ class Tank(Unit):
     def _set_usual_speed(self):
         self._speed = self._usual_speed
 
+
     def _set_water_speed(self):
         self._speed = self._water_speed
+
 
     def _on_map_collision(self, details):
         if world.WATER in details and len(details) == 1:
@@ -260,3 +260,13 @@ class Tank(Unit):
             self._undo_move()
             if self._bot:
                 self._change_orientation()
+
+
+    def _no_map_collision(self):
+        self._set_usual_speed()
+
+
+    def _on_intersects(self, other_unit):
+        super()._on_intersects(other_unit)
+        if self._bot:
+            self._change_orientation()
