@@ -1,6 +1,7 @@
 import world
 
 
+
 class Hitbox:
     def __init__(self, x, y, width, height, padding = 2):
         self.padding = padding
@@ -10,7 +11,9 @@ class Hitbox:
         self.__set_height(height)
 
         #4
-        self.__black_list = [world.CONCRETE, world.BRICK, world.WATER, world.MISSLE]
+        self.__black_list = [world.CONCRETE, world.BRICK, world.WATER, world.MISSILE]
+
+
 
 
 
@@ -94,6 +97,20 @@ class Hitbox:
         if self.bottom < other.top:
             return False
         return True
+
+
+    def set_blacklist(self, black_list):
+        self.__black_list = black_list
+        self._hitbox.set_blacklist([world.CONCRETE, world.BRICK])
+
+
+
+
+
+
+
+
+
 
 
     x = property(__get_x, __set_x)

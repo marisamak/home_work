@@ -23,6 +23,8 @@ class Unit:
         self._hitbox = Hitbox(x,y,world.BLOCK_SIZE,world.BLOCK_SIZE,
                               padding=padding)
 
+        self._destroyed = False
+
         self._default_image = default_image
         self._left_image = default_image
         self._right_image = default_image
@@ -148,6 +150,16 @@ class Unit:
         return self._bot
 
 
+    def is_destroyed(self):
+        return self._destroyed
+
+
+    def destroy(self):
+        self._destroyed = True
+        self.stop()
+        self._speed = 0
+
+
 class Tank(Unit):
     def __init__(self, canvas, row, col, bot=True):
         super().__init__(canvas,
@@ -215,6 +227,7 @@ class Tank(Unit):
         return self._ammo
 
 
+
     def _set_usual_speed(self):
         self._speed = self._usual_speed
 
@@ -236,14 +249,17 @@ class Tank(Unit):
     def _on_map_collision(self, details):
         if world.WATER in details and len(details) == 1:
             self._set_water_speed()
-        elif world.MISSLE in details:
-            pos = details[world.MISSLE]
+        elif world.MISSILE in details:
+            pos = details[world.MISSILE]
             if world.take(pos['row'], pos['col'])!= world.AIR:
                 self._take_ammo()
         else:
             self._undo_move()
             if self._bot:
                 self._change_orientation()
+
+
+
     def _no_map_collision(self):
         self._set_usual_speed()
 
@@ -268,6 +284,8 @@ class Missile(Unit):
         self._right_image = 'missile_right'
         self._owner = owner
 
+        self.__black_list = [world.CONCRETE, world.BRICK, world.WATER, world.MISSILE]
+
 
         if owner.get_vx() == 1 and owner.get_vy() == 0:
             self.right()
@@ -284,8 +302,37 @@ class Missile(Unit):
         self._y += owner.get_vy() * self.get_size() // 2
 
 
-        def get_owner(self):
-            return self._owner
+    def get_owner(self):
+        return self._owner
+
+
+    def _on_map_collision(self, details):
+        if world.BRICK in details:
+            row = details[world.BRICK]['row']
+            col = details[world.BRICK]['col']
+            world.destroy(row, col)
+            self.destroy()
+
+        if world.CONCRETE in details:
+            self.destroy()
+
+
+
+
+    def update(self):
+        start = len(_missiles) - 1
+        for i in range(start, -1, -1):
+            if _missiles[i].is_destroyed():
+                del _missiles[i]
+            else:
+                _missiles[i].update()
+
+
+
+
+
+
+
 
 
 
