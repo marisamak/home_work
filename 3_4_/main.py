@@ -15,6 +15,7 @@ KEY_D = 68
 
 FPS = 60
 
+
 def update():
     tanks_collection.update()
     missiles_collection.update()
@@ -25,6 +26,7 @@ def update():
     world.update_map()
 
     w.after(1000//FPS, update)
+
 
 def key_press(event):
     player = tanks_collection.get_player()
@@ -48,10 +50,6 @@ def key_press(event):
         player.fire()
 
 
-    # elif event.keycode == 32:
-    #     tanks_collection.spawn_enemy()
-
-
 def load_textures():
     texture.load ('tank_down', '../img/tank_down.png')
     texture.load('tank_up', '../img/tank_up.png')
@@ -73,22 +71,6 @@ def load_textures():
     texture.load('missile_left', '../img/missile_left.png')
     texture.load('missile_right', '../img/missile_right.png')
 
-# def looad_textures():
-#     texture.load('tankT34_backward', '../img/tankT34_up.png')
-#     texture.load('tankT34_forward', '../img/tankT34_down.png')
-#     texture.load('tankT34_left', '../img/tankT34_left.png')
-#     texture.load('tankT34_right', '../img/tankT34_right.png')
-#
-#     texture.load(world.BRICK, '../img/brick.png')
-#     texture.load(world.WATER, '../img/water.png')
-#     texture.load(world.CONCRETE, '../img/wall.png')
-#
-#     texture.load(world.MISSLE, '../img/bonus.png')
-#
-#     texture.load('tank_right_player', '../img/tank_right_player.png')
-#     texture.load('tank_left_player', '../img/tank_left_player.png')
-#     texture.load('tank_backward_player', '../img/tank_backward_player.png')
-#     texture.load('tank_forward_player', '../img/tank_forward_player.png')
 
 w = Tk()
 load_textures()

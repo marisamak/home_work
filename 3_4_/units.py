@@ -33,36 +33,46 @@ class Unit:
 
         self._create()
 
+
     def _create(self):
-        self._id = self._canvas.create_image(self._x,
-                                             self._y,
-                                             image=skin.get(self._default_image),
-                                             anchor=NW)
+        self._id = self._canvas.create_image(self._x, self._y, image=skin.get(self._default_image), anchor=NW)
+
+
     def __del__(self):
         try:
             self._canvas.delete(self._id)
         except Exception:
             pass
 
+
     def forward(self):
         self._vx = 0
         self._vy = -1
         self._canvas.itemconfig(self._id, image=skin.get(self._forward_image))
+
+
     def backward(self):
         self._vx = 0
         self._vy = 1
         self._canvas.itemconfig(self._id, image=skin.get(self._backward_image))
+
+
     def left(self):
         self._vx = -1
         self._vy = 0
         self._canvas.itemconfig(self._id, image=skin.get(self._left_image))
+
+
     def right(self):
         self._vx = 1
         self._vy = 0
         self._canvas.itemconfig(self._id, image=skin.get(self._right_image))
+
+
     def stop(self):
         self._vx = 0
         self._vy = 0
+
 
     def update(self):
         if self._bot:
@@ -79,8 +89,10 @@ class Unit:
     def _AI(self):
         pass
 
+
     def _update_hitbox(self):
         self._hitbox.moveto(self._x, self._y)
+
 
     def _check_map_collision(self):
         details = {}
@@ -90,11 +102,14 @@ class Unit:
         else:
             self._no_map_collision()
 
+
     def _no_map_collision(self):
         pass
 
+
     def _on_map_collision(self, details):
         pass
+
 
     def _repaint(self):
         screen_x = world.get_screen_x(self._x)
@@ -112,14 +127,17 @@ class Unit:
         self._dx = 0
         self._dy = 0
 
+
     def intersects(self, other_unit):
         value = self._hitbox.intersects(other_unit._hitbox)
         if value:
             self._on_intersects(other_unit)
         return value
 
+
     def _on_intersects(self, other_unit):
         self._undo_move()
+
 
     def _change_orientation(self):
         rand = randint(0, 3)
@@ -132,20 +150,35 @@ class Unit:
         elif rand == 3:
             self.backward()
 
+
     def get_hp(self):
         return self._hp
+
+
     def get_speed(self):
         return self._speed
+
+
     def get_x(self):
         return self._x
+
+
     def get_y(self):
         return self._y
+
+
     def get_vx(self):
         return self._vx
+
+
     def get_vy(self):
         return self._vy
+
+
     def get_size(self):
         return world.BLOCK_SIZE
+
+
     def is_bot(self):
         return self._bot
 
@@ -188,8 +221,6 @@ class Tank(Unit):
         self._target = None
 
 
-
-
     def set_target(self, target):
         self._target = target
 
@@ -206,6 +237,7 @@ class Tank(Unit):
             else:
                 self.backward()
 
+
     def _AI(self):
         if randint(1,30) ==1:
             if randint(1,10) < 9 and self._target is not None:
@@ -213,37 +245,29 @@ class Tank(Unit):
             else:
                 self._change_orientation()
 
+
     def fire(self):
         if self._ammo > 0:
             self._ammo -= 1
             missiles_collection.fire(self)
+
 
     def _take_ammo(self):
         self._ammo += 10
         if self._ammo > 100:
             self._ammo = 100
 
+
     def get_ammo(self):
         return self._ammo
-
 
 
     def _set_usual_speed(self):
         self._speed = self._usual_speed
 
+
     def _set_water_speed(self):
         self._speed = self._water_speed
-
-
-
-
-
-
-
-
-
-
-
 
 
     def _on_map_collision(self, details):
@@ -259,12 +283,8 @@ class Tank(Unit):
                 self._change_orientation()
 
 
-
     def _no_map_collision(self):
         self._set_usual_speed()
-
-
-
 
 
     def _on_intersects(self, other_unit):
@@ -317,8 +337,6 @@ class Missile(Unit):
             self.destroy()
 
 
-
-
     def update(self):
         start = len(_missiles) - 1
         for i in range(start, -1, -1):
@@ -326,21 +344,3 @@ class Missile(Unit):
                 del _missiles[i]
             else:
                 _missiles[i].update()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

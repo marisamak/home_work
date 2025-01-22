@@ -4,8 +4,6 @@ from random import randint
 import world
 import texture as skin
 
-
-
 class Tank:
     __count = 0
 
