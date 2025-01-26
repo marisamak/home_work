@@ -1,4 +1,4 @@
-from tank import Tank
+#from tank import Tank
 from tkinter import*
 
 import missiles_collection
@@ -30,6 +30,9 @@ def update():
 
 def key_press(event):
     player = tanks_collection.get_player()
+    if player.is_destroyed():
+        return
+
     if event.keycode == KEY_W:
         player.forward()
     elif event.keycode == KEY_S:
@@ -38,14 +41,17 @@ def key_press(event):
         player.left()
     elif event.keycode == KEY_D:
         player.right()
+
     elif event.keycode == KEY_UP:
         world.move_camera(0, -5)
     elif event.keycode == KEY_DOWN:
         world.move_camera(0, 5)
+
     elif event.keycode == KEY_LEFT:
         world.move_camera(-5, 0)
     elif event.keycode == KEY_RIGHT:
         world.move_camera(5, 0)
+
     elif event.keycode == 32:
         player.fire()
 
