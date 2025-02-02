@@ -1,5 +1,6 @@
+import os
 from hitbox import Hitbox
-from tkinter import NW
+from tkinter import NW, PhotoImage
 from random import randint
 
 import missiles_collection
@@ -32,11 +33,42 @@ class Unit:
         self._backward_image = default_image
         self._destroy_image = default_image
 
+        img_dir = os.path.join(os.path.dirname(__file__), "img")
+
+        # Загрузка изображений HP с указанием пути
+        self.hp_100 = PhotoImage(file=os.path.join(img_dir, "100.png"))
+        self.hp_75 = PhotoImage(file=os.path.join(img_dir, "75.png"))
+        self.hp_50 = PhotoImage(file=os.path.join(img_dir, "50.png"))
+        self.hp_25 = PhotoImage(file=os.path.join(img_dir, "25.png"))
+        self.hp_0 = PhotoImage(file=os.path.join(img_dir, "0.png"))
+
+        self._hp_id = None
+
         self._create()
 
 
     def _create(self):
         self._id = self._canvas.create_image(self._x, self._y, image=skin.get(self._default_image), anchor=NW)
+        self._hp_id = self._canvas.create_image(self._x, self._y - 20, image=self.hp_100, anchor=NW)
+
+    def _update_hp_display(self):
+        """Обновляет изображение HP в зависимости от текущего здоровья."""
+        if self._hp_id is not None:
+            if self._hp > 75:
+                hp_image = self.hp_100
+            elif self._hp > 50:
+                hp_image = self.hp_75
+            elif self._hp > 25:
+                hp_image = self.hp_50
+            elif self._hp > 0:
+                hp_image = self.hp_25
+            else:
+                hp_image = self.hp_0
+
+            screen_x = world.get_screen_x(self._x)
+            screen_y = world.get_screen_y(self._y - 20)
+            self._canvas.moveto(self._hp_id, x=screen_x, y=screen_y)
+            self._canvas.itemconfig(self._hp_id, image=hp_image)
 
 
     def __del__(self):
@@ -89,6 +121,7 @@ class Unit:
         self._update_hitbox()
         self._check_map_collision()
         self._repaint()
+        self._update_hp_display()
 
 
     def _AI(self):
@@ -192,6 +225,7 @@ class Unit:
         self._hp -= value
         if self._hp <= 0:
             self.destroy()
+        self._update_hp_display()
 
 
     def is_destroyed(self):
