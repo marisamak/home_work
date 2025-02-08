@@ -74,3 +74,9 @@ def spawn(is_bot=True):
         if not check_collision(t):
             _tanks.append(t)
             return t
+
+
+def reset():
+    global _tanks
+    _tanks = []  # Очищаем список танков
+    initialize(_canvas)  # Пересоздаём танки

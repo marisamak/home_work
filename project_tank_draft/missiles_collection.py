@@ -33,3 +33,8 @@ def check_missiles_collision(tank):
             tank.damage(25)
 
             return
+
+
+def reset():
+    global _missiles
+    _missiles = []  # Очищаем список снарядов

@@ -189,7 +189,7 @@ class _Cell:
 
     def take(self):
         block = self.get_block()
-        if block == MISSLE:
+        if block == MISSILE:
             self.set_block(GROUND)
             return block
         else:
