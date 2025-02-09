@@ -81,6 +81,8 @@ load_textures()
 w.title('Танки на минималках 2.0')
 canv = Canvas(w, width=world.SCREEN_WIDTH, height=world.SCREEN_HEIGHT, bg='#8ccb5e')
 canv.pack()
+
+# поработать с этим инициализатором (когда вызываешь меню)
 world.initialize(canv)
 tanks_collection.initialize(canv)
 missiles_collection.initialize(canv)
