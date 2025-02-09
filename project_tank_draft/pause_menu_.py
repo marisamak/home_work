@@ -1,7 +1,7 @@
 from tkinter import Canvas, CENTER
 import world
-import tanks_collection
-import missiles_collection
+#import tanks_collection
+#import missiles_collection
 
 game_paused = False
 menu_active = False
@@ -9,31 +9,12 @@ menu_index = 0
 menu_options = ["Возврат в игру", "Новая игра", "Выход"]
 menu_canvas = None
 
-
 def toggle_pause():
     global game_paused
     game_paused = not game_paused
 
-#def next_map():
-#    global selected_map
-#    selected_map = (selected_map + 1) % len(world.map)  # Переход к следующей карте
-
-
 def restart_game():
-    global game_paused, menu_active, menu_canvas
-
-    game_paused = False
-    menu_active = False
-    if menu_canvas:
-        menu_canvas.destroy()
-        menu_canvas = None
-
-    world.load_map(world.map)
-#    world.load_map(world.map[world.selected_map])  # Загружаем карту
-    world.update_map(all=True)  # Обновляем карту
-    tanks_collection.reset()  # Пересоздаём танки
-    missiles_collection.reset()  # Очищаем ракеты
-
+    pass
 
 def show_menu(root):
     global menu_active, menu_canvas
@@ -44,9 +25,10 @@ def show_menu(root):
     menu_canvas.place(x=world.SCREEN_WIDTH//2 - 150, y=world.SCREEN_HEIGHT//2 - 100)
     update_menu()
 
-
 def update_menu():
     global menu_canvas, menu_index
+
+    color = 'white'
 
     if not menu_active:
         return
@@ -60,7 +42,6 @@ def update_menu():
             color = "black"  # Обычный цвет
 
         menu_canvas.create_text(150, 50 + i * 50, text=option, fill=color, font=("Arial", 14), anchor=CENTER)
-
 
 def handle_menu_selection(root):
     global menu_active, menu_index, menu_canvas

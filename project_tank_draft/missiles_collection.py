@@ -3,7 +3,6 @@ from units import Missile
 _missiles = []
 _canvas = None
 
-
 def initialize(canvas):
     global _canvas
     _canvas = canvas

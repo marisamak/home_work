@@ -409,6 +409,7 @@ class Missile(Unit):
         self._x += owner.get_vx() * self.get_size() // 2
         self._y += owner.get_vy() * self.get_size() // 2
 
+
     def _create(self):
         # Переопределяем метод, чтобы не создавать _hp_id для снарядов
         self._id = self._canvas.create_image(self._x, self._y, image=skin.get(self._default_image), anchor=NW)
