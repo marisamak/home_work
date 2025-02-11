@@ -37,6 +37,7 @@ def get_player():
 
 
 def update():
+
     _update_screen_text()
 
     start = len(_tanks) - 1
@@ -48,6 +49,8 @@ def update():
             _tanks[i].update()
             check_collision(_tanks[i])
             check_missiles_collision(_tanks[i])
+
+
 
 
 def check_collision(tank):
@@ -77,6 +80,36 @@ def spawn(is_bot=True):
 
 
 def reset():
-    global _tanks
-    _tanks = []  # Очищаем список танков
-    initialize(_canvas)  # Пересоздаём танки
+    global _tanks, id_screen_text
+
+    # Очищаем список танков
+    _tanks = []
+    print("Список танков очищен.")  # Отладочное сообщение
+
+    # Удаляем старый текст, если он есть
+    if id_screen_text is not None:
+        _canvas.delete(id_screen_text)
+        id_screen_text = None
+        print("Старая надпись удалена.")  # Отладочное сообщение
+
+    # Пересоздаем танки
+    initialize(_canvas)  # Инициализируем танки
+
+    # Назначаем цель для ботов
+    player = None
+    for tank in _tanks:
+        if not tank.is_bot():  # Находим игрока
+            player = tank
+            break
+
+    if player:
+        for tank in _tanks:
+            if tank.is_bot():  # Назначаем цель для ботов
+                tank.set_target(player)
+
+    # Обновляем надпись
+    _update_screen_text()
+    print("Надпись обновлена.")  # Отладочное сообщение
+
+    # Обновляем игру
+    update()
