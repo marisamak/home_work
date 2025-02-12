@@ -13,6 +13,14 @@ menu_canvas = None
 def toggle_pause():
     global game_paused
     game_paused = not game_paused
+    tanks_collection.set_game_paused(game_paused)
+
+    if not game_paused and not tanks_collection._menu_active:
+        print("Возобновление игрового цикла после паузы")
+        tanks_collection.start_update_loop()
+
+
+
 
 #def next_map():
 #    global selected_map
@@ -71,22 +79,29 @@ def update_menu():
 
 
 def handle_menu_selection(root):
-    global menu_active, menu_index, menu_canvas
-    if menu_index == 0:
+    global menu_active, game_paused
+    if menu_index == 0:  # Возврат в игру
         menu_active = False
-        menu_paused = False
+        game_paused = False
 
-        tanks_collection.set_game_paused(False)  # Возобновляем движение
+        tanks_collection.set_game_paused(False)
         tanks_collection.set_menu_active(False)
 
         if menu_canvas:
             menu_canvas.destroy()
-            menu_canvas = None
 
-    elif menu_index == 1:
+        # Проверяем, идет ли уже игровой цикл, чтобы не запускать его снова
+        if not tanks_collection._game_paused and not tanks_collection._menu_active:
+            print("Цикл обновления запускается заново после выхода из меню")
+            tanks_collection.start_update_loop()
+
+
+    elif menu_index == 1:  # "Новая игра"
         restart_game()
-    elif menu_index == 2:
+
+    elif menu_index == 2:  # "Выход"
         root.quit()
+
 
 def menu_key_press(event, root):
     global menu_active, menu_index

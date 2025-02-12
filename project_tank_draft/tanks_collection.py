@@ -3,6 +3,7 @@ from tkinter import NW
 from units import Tank, Unit
 import world
 import missiles_collection
+from tkinter import NW
 
 _tanks = []
 _canvas = None
@@ -14,6 +15,7 @@ FPS = 30
 _game_paused = False
 _menu_active = False
 
+_game_loop_id = None  # Глобальная переменная для хранения идентификатора цикла
 
 def initialize(canv):
     global _canvas, id_screen_text
@@ -87,9 +89,13 @@ def spawn(is_bot=True):
 
 
 def pause_game():
-    """Ставит игру на паузу"""
-    global _game_paused
+    """Ставит игру на паузу и останавливает цикл обновления"""
+    global _game_paused, _game_loop_id
     _game_paused = True
+
+    if _game_loop_id is not None:
+        _canvas.after_cancel(_game_loop_id)
+        _game_loop_id = None  # Очищаем переменную, чтобы не запустить заново случайно
 
 
 def resume_game():
@@ -109,23 +115,41 @@ def set_menu_active(active):
 
 
 def start_update_loop():
-    """Запуск основного игрового цикла"""
+    """Запуск игрового цикла. Перед запуском останавливает старый"""
+    global _game_loop_id
+
+    # Если цикл уже запущен, отменяем его
+    if _game_loop_id is not None:
+        _canvas.after_cancel(_game_loop_id)
 
     def loop():
+        global _game_loop_id
         if _game_paused or _menu_active or get_player().is_destroyed():
-            return
+            return  # Не обновляем, если игра на паузе или игрок уничтожен
         update()
-        _canvas.after(1000 // FPS, loop)
+        _game_loop_id = _canvas.after(1000 // FPS, loop)  # Запоминаем идентификатор цикла
 
     loop()
 
 
-def reset():
-    """Перезапуск игры после смерти"""
-    global _tanks, id_screen_text, _menu_active, _game_paused
 
-    _menu_active = False  # Закрываем меню
-    _game_paused = False  # Снимаем паузу
+
+
+
+
+
+
+
+def reset():
+    """Перезапуск игры"""
+    global _tanks, id_screen_text, _menu_active, _game_paused, _game_loop_id
+
+    _menu_active = False
+    _game_paused = False
+
+    if _game_loop_id is not None:
+        _canvas.after_cancel(_game_loop_id)
+        _game_loop_id = None  # Очищаем идентификатор цикла
 
     _tanks = []
 
@@ -135,6 +159,5 @@ def reset():
 
     initialize(_canvas)  # Пересоздаем танки
     _update_screen_text()
-
-    start_update_loop()  # Запускаем обновление игры
+    start_update_loop()  # Запускаем обновление игры заново
 
