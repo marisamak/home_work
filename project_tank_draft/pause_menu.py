@@ -34,14 +34,22 @@ def restart_game():
     tanks_collection.reset()  # Пересоздаём танки
     missiles_collection.reset()  # Очищаем ракеты
 
+    tanks_collection.start_update_loop()
+
 
 def show_menu(root):
-    global menu_active, menu_canvas
+    global menu_active, menu_canvas, game_paused
     if menu_active:
         return
     menu_active = True
+    game_paused = True
+
+    tanks_collection.set_game_paused(True)  # Останавливаем движение танков
+    tanks_collection.set_menu_active(True)
+
     menu_canvas = Canvas(root, width=300, height=200, bg="gray")
     menu_canvas.place(x=world.SCREEN_WIDTH//2 - 150, y=world.SCREEN_HEIGHT//2 - 100)
+
     update_menu()
 
 
@@ -66,8 +74,15 @@ def handle_menu_selection(root):
     global menu_active, menu_index, menu_canvas
     if menu_index == 0:
         menu_active = False
+        menu_paused = False
+
+        tanks_collection.set_game_paused(False)  # Возобновляем движение
+        tanks_collection.set_menu_active(False)
+
         if menu_canvas:
             menu_canvas.destroy()
+            menu_canvas = None
+
     elif menu_index == 1:
         restart_game()
     elif menu_index == 2:
