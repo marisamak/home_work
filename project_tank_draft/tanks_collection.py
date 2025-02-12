@@ -95,18 +95,6 @@ def reset():
     # Пересоздаем танки
     initialize(_canvas)  # Инициализируем танки
 
-    # Назначаем цель для ботов
-    player = None
-    for tank in _tanks:
-        if not tank.is_bot():  # Находим игрока
-            player = tank
-            break
-
-    if player:
-        for tank in _tanks:
-            if tank.is_bot():  # Назначаем цель для ботов
-                tank.set_target(player)
-
     # Обновляем надпись
     _update_screen_text()
     print("Надпись обновлена.")  # Отладочное сообщение

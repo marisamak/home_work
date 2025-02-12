@@ -2,6 +2,7 @@ import  texture
 from tkinter import NW
 from  random import randint, choice
 
+
 GROUND = 'g'
 WATER = 'w'
 CONCRETE = 'c'
