@@ -16,9 +16,12 @@ FPS = 60
 
 
 def key_press(event):
+    print(f"Нажата клавиша: {event.keycode}")  # Проверка нажатой клавиши
     player = tanks_collection.get_player()
+
     if player.is_destroyed() or pause_menu.menu_active:
-        pause_menu.menu_key_press(event, w)  # управляем меню
+        print("Вызов menu_key_press")  # Проверка, вызывается ли menu_key_press
+        pause_menu.menu_key_press(event, w)  # Управляем меню
         return
 
     if not pause_menu.menu_active:

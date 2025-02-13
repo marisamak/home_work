@@ -46,16 +46,21 @@ def restart_game():
 
 
 def show_menu(root):
+    print("Функция show_menu() вызвана!")
     global menu_active, menu_canvas, game_paused
     if menu_active:
         return
     menu_active = True
+
+    print(f"menu_active = {menu_active}, game_paused = {game_paused}")  # ← Проверка
+
     game_paused = True
 
     tanks_collection.set_game_paused(True)  # Останавливаем движение танков
     tanks_collection.set_menu_active(True)
 
     menu_canvas = Canvas(root, width=300, height=200, bg="gray")
+    print("menu_canvas создан!")  # ← Проверка
     menu_canvas.place(x=world.SCREEN_WIDTH//2 - 150, y=world.SCREEN_HEIGHT//2 - 100)
 
     update_menu()
@@ -65,7 +70,10 @@ def update_menu():
     global menu_canvas, menu_index
 
     if not menu_active:
+        print("update_menu() не вызвано, потому что menu_active = False")  # ← Проверка
         return
+
+    print("Функция update_menu() вызвана!")  # ← Проверка
 
     menu_canvas.delete("all")
 

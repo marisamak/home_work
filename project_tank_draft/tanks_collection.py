@@ -10,7 +10,7 @@ _canvas = None
 
 id_screen_text = 0
 
-FPS = 30
+FPS = 60
 
 _game_paused = False
 _menu_active = False
@@ -89,20 +89,16 @@ def spawn(is_bot=True):
 
 
 def pause_game():
-    """Ставит игру на паузу и останавливает цикл обновления"""
-    global _game_paused, _game_loop_id
+    global _game_paused
+    print(f"Игра на паузе. FPS перед остановкой: {FPS}")
     _game_paused = True
-
-    if _game_loop_id is not None:
-        _canvas.after_cancel(_game_loop_id)
-        _game_loop_id = None  # Очищаем переменную, чтобы не запустить заново случайно
 
 
 def resume_game():
-    """Возобновляет игру"""
     global _game_paused
+    print(f"Возобновление игры. FPS: {FPS}")
     _game_paused = False
-    start_update_loop()  # Перезапускаем цикл обновления
+    start_update_loop()
 
 def set_game_paused(paused):
     global _game_paused
@@ -115,33 +111,24 @@ def set_menu_active(active):
 
 
 def start_update_loop():
-    """Запуск игрового цикла. Перед запуском останавливает старый"""
+    """Запуск игрового цикла без дублирования"""
     global _game_loop_id
 
-    # Если цикл уже запущен, отменяем его
     if _game_loop_id is not None:
         _canvas.after_cancel(_game_loop_id)
 
     def loop():
         global _game_loop_id
         if _game_paused or _menu_active or get_player().is_destroyed():
-            return  # Не обновляем, если игра на паузе или игрок уничтожен
+            return
         update()
-        _game_loop_id = _canvas.after(1000 // FPS, loop)  # Запоминаем идентификатор цикла
+        _game_loop_id = _canvas.after(1000 // FPS, loop)  # Обновляем каждые 1/FPS секунды
 
-    loop()
-
-
-
-
-
-
-
-
+    _game_loop_id = _canvas.after(1000 // FPS, loop)  # Запускаем основной цикл
 
 
 def reset():
-    """Перезапуск игры"""
+    """Перезапуск игры без изменения FPS"""
     global _tanks, id_screen_text, _menu_active, _game_paused, _game_loop_id
 
     _menu_active = False
@@ -149,7 +136,7 @@ def reset():
 
     if _game_loop_id is not None:
         _canvas.after_cancel(_game_loop_id)
-        _game_loop_id = None  # Очищаем идентификатор цикла
+        _game_loop_id = None
 
     _tanks = []
 
@@ -157,7 +144,8 @@ def reset():
         _canvas.delete(id_screen_text)
         id_screen_text = None
 
-    initialize(_canvas)  # Пересоздаем танки
-    _update_screen_text()
-    start_update_loop()  # Запускаем обновление игры заново
+    initialize(_canvas)
+    start_update_loop()  # Возвращаем нормальную скорость
+
+
 
