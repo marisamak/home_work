@@ -16,12 +16,10 @@ FPS = 60
 
 
 def key_press(event):
-    print(f"Нажата клавиша: {event.keycode}")  # Проверка нажатой клавиши
     player = tanks_collection.get_player()
 
     if player.is_destroyed() or pause_menu.menu_active:
-        print("Вызов menu_key_press")  # Проверка, вызывается ли menu_key_press
-        pause_menu.menu_key_press(event, w)  # Управляем меню
+        pause_menu.menu_key_press(event, w)
         return
 
     if not pause_menu.menu_active:
@@ -85,7 +83,6 @@ w.title('Танки на минималках 2.0')
 canv = Canvas(w, width=world.SCREEN_WIDTH, height=world.SCREEN_HEIGHT, bg='#8ccb5e')
 canv.pack()
 
-# поработать с этим инициализатором (когда вызываешь меню)
 world.initialize(canv)
 tanks_collection.initialize(canv)
 missiles_collection.initialize(canv)

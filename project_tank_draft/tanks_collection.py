@@ -1,6 +1,5 @@
 from random import randint
-from tkinter import NW
-from units import Tank, Unit
+from units import Tank
 import world
 import missiles_collection
 from tkinter import NW
@@ -16,6 +15,7 @@ _game_paused = False
 _menu_active = False
 
 _game_loop_id = None  # Глобальная переменная для хранения идентификатора цикла
+
 
 def initialize(canv):
     global _canvas, id_screen_text
@@ -46,7 +46,6 @@ def get_player():
 
 
 def update():
-    """Обновление состояния танков и снарядов"""
     _update_screen_text()
 
     start = len(_tanks) - 1
@@ -90,51 +89,50 @@ def spawn(is_bot=True):
 
 def pause_game():
     global _game_paused
-    print(f"Игра на паузе. FPS перед остановкой: {FPS}")
     _game_paused = True
 
 
 def resume_game():
     global _game_paused
-    print(f"Возобновление игры. FPS: {FPS}")
     _game_paused = False
     start_update_loop()
+
 
 def set_game_paused(paused):
     global _game_paused
     _game_paused = paused
 
+
 def set_menu_active(active):
-    """Устанавливает состояние меню"""
     global _menu_active
     _menu_active = active
 
 
-def start_update_loop():
-    """Запуск игрового цикла без дублирования"""
+def start_update_loop(): # Запуск игрового цикла (продолжает игру)
     global _game_loop_id
 
-    if _game_loop_id is not None:
+    if _game_loop_id is not None:  # Если цикл уже идёт, остановить его
         _canvas.after_cancel(_game_loop_id)
+        _game_loop_id = None
 
-    def loop():
+    def loop(): # Функция одного кадра игры
         global _game_loop_id
         if _game_paused or _menu_active or get_player().is_destroyed():
             return
         update()
-        _game_loop_id = _canvas.after(1000 // FPS, loop)  # Обновляем каждые 1/FPS секунды
+        _game_loop_id = _canvas.after(1000 // FPS, loop)
+
 
     _game_loop_id = _canvas.after(1000 // FPS, loop)  # Запускаем основной цикл
 
 
-def reset():
-    """Перезапуск игры без изменения FPS"""
+def reset(): # Перезапуск всей игры (удаляет старые объекты и создаёт новые)
     global _tanks, id_screen_text, _menu_active, _game_paused, _game_loop_id
 
     _menu_active = False
     _game_paused = False
 
-    if _game_loop_id is not None:
+    if _game_loop_id is not None: # Если игровой процесс уже запущен
         _canvas.after_cancel(_game_loop_id)
         _game_loop_id = None
 
