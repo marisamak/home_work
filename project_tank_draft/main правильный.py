@@ -4,6 +4,7 @@ import world
 import tanks_collection
 import texture
 import pause_menu  # Импортируем меню паузы
+import os
 
 KEY_UP, KEY_DOWN = 38, 40
 KEY_W, KEY_S, KEY_A, KEY_D = 87, 83, 65, 68
@@ -53,25 +54,29 @@ def update():
     w.after(1000 // FPS, update)
 
 def load_textures():
-    texture.load('tank_down', '../img/tank_down.png')
-    texture.load('tank_up', '../img/tank_up.png')
-    texture.load('tank_left', '../img/tank_left.png')
-    texture.load('tank_right', '../img/tank_right.png')
-    texture.load('tank_down_player', '../img/tank_down_player.png')
-    texture.load('tank_up_player', '../img/tank_up_player.png')
-    texture.load('tank_left_player', '../img/tank_left_player.png')
-    texture.load('tank_right_player', '../img/tank_right_player.png')
+    # Используйте абсолютные пути или правильные относительные пути
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    img_path = os.path.join(base_path, 'img')
 
-    texture.load(world.BRICK, '../img/brick.png')
-    texture.load(world.WATER, '../img/water.png')
-    texture.load(world.CONCRETE, '../img/wall.png')
-    texture.load(world.MISSILE, '../img/bonus.png')
+    texture.load('tank_down', os.path.join(img_path, 'tank_down.png'))
+    texture.load('tank_up', os.path.join(img_path, 'tank_up.png'))
+    texture.load('tank_left', os.path.join(img_path, 'tank_left.png'))
+    texture.load('tank_right', os.path.join(img_path, 'tank_right.png'))
+    texture.load('tank_down_player', os.path.join(img_path, 'tank_down_player.png'))
+    texture.load('tank_up_player', os.path.join(img_path, 'tank_up_player.png'))
+    texture.load('tank_left_player', os.path.join(img_path, 'tank_left_player.png'))
+    texture.load('tank_right_player', os.path.join(img_path, 'tank_right_player.png'))
 
-    texture.load('missile_up', '../img/missile_up.png')
-    texture.load('missile_down', '../img/missile_down.png')
-    texture.load('missile_left', '../img/missile_left.png')
-    texture.load('missile_right', '../img/missile_right.png')
-    texture.load('tank_destroy', '../img/tank_destroy.png')
+    texture.load(world.BRICK, os.path.join(img_path, 'brick.png'))
+    texture.load(world.WATER, os.path.join(img_path, 'water.png'))
+    texture.load(world.CONCRETE, os.path.join(img_path, 'wall.png'))
+    texture.load(world.MISSILE, os.path.join(img_path, 'bonus.png'))
+
+    texture.load('missile_up', os.path.join(img_path, 'missile_up.png'))
+    texture.load('missile_down', os.path.join(img_path, 'missile_down.png'))
+    texture.load('missile_left', os.path.join(img_path, 'missile_left.png'))
+    texture.load('missile_right', os.path.join(img_path, 'missile_right.png'))
+    texture.load('tank_destroy', os.path.join(img_path, 'tank_destroy.png'))
 
 w = Tk()
 load_textures()

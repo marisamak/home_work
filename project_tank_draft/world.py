@@ -1,6 +1,7 @@
 import  texture
 from tkinter import NW
 from  random import randint, choice
+import os
 
 
 GROUND = 'g'
@@ -25,7 +26,7 @@ _map = []
 
 AIR = 'a'
 
-map = '../map/3.tmap'
+map = os.path.join(os.path.dirname(__file__), 'map', '3.tmap')
 #maps = ['../map/1.tmap', '../map/2.tmap', '../map/3.tmap']
 #selected_map = 0
 
